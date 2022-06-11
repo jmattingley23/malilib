@@ -1,19 +1,25 @@
 package fi.dy.masa.malilib.util;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.network.message.MessageSender;
+import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.Message.MessageType;
 import fi.dy.masa.malilib.gui.interfaces.IMessageConsumer;
 import fi.dy.masa.malilib.interfaces.IStringConsumer;
 import fi.dy.masa.malilib.render.MessageRenderer;
+import net.minecraft.util.registry.BuiltinRegistries;
+
+import java.util.Optional;
 
 public class InfoUtils
 {
     private static final MessageRenderer IN_GAME_MESSAGES = new MessageRenderer(0xA0000000, 0).setBackgroundStyle(true, false).setCentered(true, false).setExpandUp(true);
+    private static final net.minecraft.network.message.MessageType GAME_INFO_MESSAGE_TYPE = new net.minecraft.network.message.MessageType(Optional.empty(), Optional.of(net.minecraft.network.message.MessageType.DisplayRule.of()), Optional.empty());
 
     public static final IStringConsumer INFO_MESSAGE_CONSUMER = new InfoMessageConsumer();
+
 
     /**
      * Adds the message to the current GUI's message handler, if there is currently
@@ -142,7 +148,7 @@ public class InfoUtils
 
         if (mc.player != null)
         {
-            mc.inGameHud.addChatMessage(net.minecraft.network.MessageType.GAME_INFO, new TranslatableText(key, args), Util.NIL_UUID);
+            mc.inGameHud.onChatMessage(GAME_INFO_MESSAGE_TYPE, Text.translatable(key, args), new MessageSender(Util.NIL_UUID, Text.empty(), null));
         }
     }
 
@@ -198,7 +204,7 @@ public class InfoUtils
 
             if (mc.player != null)
             {
-                mc.inGameHud.addChatMessage(net.minecraft.network.MessageType.GAME_INFO, new TranslatableText(string), Util.NIL_UUID);
+                mc.inGameHud.onChatMessage(GAME_INFO_MESSAGE_TYPE, Text.of(string), new MessageSender(Util.NIL_UUID, Text.empty(), null));
             }
         }
     }

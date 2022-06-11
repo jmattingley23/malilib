@@ -1200,11 +1200,11 @@ public class RenderUtils
             for (Direction face : Direction.values())
             {
                 RAND.setSeed(0);
-                renderQuads(bufferbuilder, model.getQuads(state, face, RAND), state, color);
+                renderQuads(bufferbuilder, model.getQuads(state, face, net.minecraft.util.math.random.Random.create()), state, color);
             }
 
             RAND.setSeed(0);
-            renderQuads(bufferbuilder, model.getQuads(state, null, RAND), state, color);
+            renderQuads(bufferbuilder, model.getQuads(state, null, net.minecraft.util.math.random.Random.create()), state, color);
             tessellator.draw();
         }
 
